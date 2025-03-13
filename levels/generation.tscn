@@ -1,0 +1,93 @@
+[gd_scene load_steps=19 format=3 uid="uid://srk1tllh5rcu"]
+
+[ext_resource type="Script" uid="uid://usu5htlfiubo" path="res://addons/zylann.hterrain/hterrain.gd" id="1_ve2dc"]
+[ext_resource type="Resource" uid="uid://b54dfb5n5kddl" path="res://levels/generation_data/data.hterrain" id="2_uvw2u"]
+[ext_resource type="Script" uid="uid://dcxdaiolxgxnx" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="3_ebmw0"]
+[ext_resource type="Texture2D" uid="uid://7bvuxoedpbvd" path="res://levels/generation_slot0_albedo_bump.png" id="4_a83sm"]
+[ext_resource type="Texture2D" uid="uid://ddqswtaprkc8n" path="res://levels/generation_slot1_albedo_bump.png" id="5_y1uv8"]
+[ext_resource type="Texture2D" uid="uid://br1wwycwgtord" path="res://levels/generation_slot2_albedo_bump.png" id="6_yppa5"]
+[ext_resource type="Texture2D" uid="uid://dld4o2lafcjyd" path="res://levels/generation_slot0_normal_roughness.png" id="7_hijfk"]
+[ext_resource type="Texture2D" uid="uid://kwaicof4djio" path="res://levels/generation_slot1_normal_roughness.png" id="8_d5lvh"]
+[ext_resource type="Texture2D" uid="uid://c75c4dr333kte" path="res://levels/generation_slot2_normal_roughness.png" id="9_ykmgj"]
+[ext_resource type="PackedScene" uid="uid://c4jn3xms7kbnw" path="res://assets/building.tscn" id="10_hijfk"]
+[ext_resource type="PackedScene" uid="uid://ce88hoxom5uqa" path="res://assets/building_2.tscn" id="11_d5lvh"]
+[ext_resource type="PackedScene" uid="uid://dqg30e8p8a2k" path="res://assets/building_tall.tscn" id="12_ykmgj"]
+[ext_resource type="PackedScene" uid="uid://bvwnxnge2t8ia" path="res://assets/house.tscn" id="13_ykmgj"]
+[ext_resource type="PackedScene" uid="uid://cc1m2a1obsyn4" path="res://addons/fpc/character.tscn" id="14_a8rpj"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ve2dc"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_7r4gi"]
+sky_material = SubResource("ProceduralSkyMaterial_ve2dc")
+
+[sub_resource type="Environment" id="Environment_uvw2u"]
+background_mode = 2
+sky = SubResource("Sky_7r4gi")
+tonemap_mode = 2
+glow_enabled = true
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.7718, 0.79422, 0.829452, 1)
+fog_density = 1.0
+fog_depth_begin = 181.0
+fog_depth_end = 3000.0
+
+[sub_resource type="Resource" id="Resource_hjpch"]
+script = ExtResource("3_ebmw0")
+mode = 0
+textures = [[ExtResource("4_a83sm"), ExtResource("5_y1uv8"), ExtResource("6_yppa5")], [ExtResource("7_hijfk"), ExtResource("8_d5lvh"), ExtResource("9_ykmgj")]]
+
+[node name="Generation" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_uvw2u")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.23295, -0.604128, 0.762079, 0.415833, 0.646506, 0.639619, -0.879101, 0.465897, 0.100612, 0, 0, 0)
+shadow_enabled = true
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("1_ve2dc")
+centered = true
+_terrain_data = ExtResource("2_uvw2u")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_hjpch")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 25.0
+shader_params/u_depth_blending = false
+shader_params/u_triplanar = true
+shader_params/u_tile_reduction = Vector4(0, 0, 0, 0)
+shader_params/u_specular = 0.0
+metadata/_custom_type_script = "uid://usu5htlfiubo"
+
+[node name="Character" parent="." instance=ExtResource("14_a8rpj")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -313, 20, 94)
+
+[node name="Buildings" type="Node3D" parent="."]
+
+[node name="Building" parent="Buildings" instance=ExtResource("10_hijfk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -322.291, 20.0889, 48.1863)
+
+[node name="Building2" parent="Buildings" instance=ExtResource("10_hijfk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -296.078, 20.0889, 67.7416)
+
+[node name="Building3" parent="Buildings" instance=ExtResource("11_d5lvh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -293.938, 20.1019, 44.5679)
+
+[node name="Building4" parent="Buildings" instance=ExtResource("11_d5lvh")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -326.703, 20.1019, 62.9015)
+
+[node name="BuildingTall" parent="Buildings" instance=ExtResource("12_ykmgj")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -252, 20.2, 136)
+
+[node name="House" parent="Buildings" instance=ExtResource("13_ykmgj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -313, 20.105, 61)
